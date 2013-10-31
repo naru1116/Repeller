@@ -28,46 +28,50 @@ class Car extends Sprite {
 
     double ta=(x3-x4)*(y1-y3)+(y3-y4)*(x3-x1);
     double tb=(x3-x4)*(y2-y3)+(y3-y4)*(x3-x2);
-    return tc*td < 0 && ta*tb < 0;
+    return tc*td <= 0 && ta*tb <= 0;
   }
   void hitTest(Car targetCar) {
-    double relativeDx = this.dx - targetCar.dx;
-    double relativeDy = this.dy - targetCar.dy;
-    double hitTestOriginX = targetCar.x + (relativeDx > 0 ? 0 : targetCar.x + targetCar.width);
-    double hitTestOriginY = targetCar.y + (relativeDy > 0 ? 0 : targetCar.y + targetCar.height);
-    double hitTestPointX = this.x + (relativeDx > 0 ? this.width : 0);
-    double hitTestPointY = this.y + (relativeDy > 0 ? this.height : 0);
-    
+    double dx = this.dx - targetCar.dx;
+    double dy = this.dy - targetCar.dy;
+    boolean isDx = dx >= 0;
+    boolean isDy = dy >= 0;
+    double px = this.x + (isDx ? this.width : 0);
+    double py = this.y + (isDy ? this.height : 0);
+    double qx = targetCar.x + (!isDx ? targetCar.width : 0);
+    double qy = targetCar.y + (!isDy ? targetCar.height : 0);
 
-    double x1 = hitTestPointX - hitTestOriginX;
-    double y1 = hitTestPointY - hitTestOriginY;
+    double x1 = px;
+    double y1 = py;
+    double x2 = px + dx;
+    double y2 = py + dy;
 
-    double x2 = x1 + relativeDx;
-    double y2 = y1 + relativeDy;
+    double x3 = qx;
+    double y3 = qy;
+    double x4 = qx + (this.width + targetCar.width) * (isDx ? 1 : -1);
+    double y4 = qy;
+    boolean isHorizontalHit = hitTestLineSegments(x1, y1, x2, y2, x3, y3, x4, y4);
+    x4 = qx;
+    y4 = qy + (this.height + targetCar.height) * (isDy ? 1 : -1);
+    boolean isVerticalHit = hitTestLineSegments(x1, y1, x2, y2, x3, y3, x4, y4);
 
-    double x3 = 0;
-    double y3 = 0;
-    double x4 = 0;
-    double y4 = this.height + targetCar.height;
-    boolean result1 = hitTestLineSegments(x1, y1, x2, y2, x3, y3, x4, y4);
-    x3 = 0;
-    x4 = this.width + targetCar.width;
-    y3 = 0;
-    y4 = 0;
-    boolean result2 = hitTestLineSegments(x1, y1, x2, y2, x3, y3, x4, y4);
-    if(result1) {
-      this.dx *= -1;
-    } else if(result2) {
+    if(isHorizontalHit) {
       this.dy *= -1;
+      targetCar.dy *= -1;
     }
+
+    if(isVerticalHit) {
+      this.dx *= -1;
+      targetCar.dx *= -1;
+    }
+
   }
   void update(Graphics g, int canvasWidth, int canvasHeight) {
-    dx += ddx;
-    dy += ddy;
     x += dx;
     y += dy;
     dx *= 0.99;
     dy *= 0.99;
+    dx += ddx;
+    dy += ddy;
     if(x > canvasWidth - width) {
       x = canvasWidth - width;
       dx *= -1;
