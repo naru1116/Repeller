@@ -2,22 +2,30 @@ import java.awt.*;
 class Car extends Sprite {
   public double x = 100;
   public double y = 100;
-  public double width = 100;
-  public double height = 100;
+  private final int afterImageCount = 20;
+  private int currentAfterImage = 0;
+  public double[] xs;
+  public double[] ys;
+  public double width = 50;
+  public double height = 50;
   public double dx = 0, dy = 0;
   public double ddx = 0, ddy = 0;
+  public double damage = 0; //max damage is 1.0
+  public double energy = 0; //energy is 1.0
   public Color color;
-  public Car(int x, int y, Color color) {
-    this.x = x;
-    this.y = y;
-    this.color = color;
-  }
   public Car(int x, int y, int dx, int dy, Color color) {
     this.x = x;
     this.y = y;
     this.dx = dx;
     this.dy = dy;
     this.color = color;
+
+    this.xs = new double[afterImageCount];
+    this.ys = new double[afterImageCount];
+    for(int i = 0; i < afterImageCount; i++) {
+      this.xs[i] = x;
+      this.ys[i] = y;
+    }
   }
   private boolean hitTestLineSegments(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
     //A(x1,y1),B(x2,y2)
@@ -54,20 +62,61 @@ class Car extends Sprite {
     y4 = qy + (this.height + targetCar.height) * (isDy ? 1 : -1);
     boolean isVerticalHit = hitTestLineSegments(x1, y1, x2, y2, x3, y3, x4, y4);
 
+
+    double speed = this.dx * this.dx + this.dy * this.dy;
+    double targetSpeed = targetCar.dx * targetCar.dx + targetCar.dy * targetCar.dy;
     if(isHorizontalHit) {
+      if(isDy) {
+        this.y = targetCar.y - targetCar.height;
+      } else {
+        this.y = targetCar.y + targetCar.height;
+      }
       this.dy *= -1;
       targetCar.dy *= -1;
     }
 
     if(isVerticalHit) {
+      if(isDx) {
+        this.x = targetCar.x - targetCar.width;
+      } else {
+        this.x = targetCar.x + targetCar.width;
+      }
       this.dx *= -1;
       targetCar.dx *= -1;
     }
+    if(isHorizontalHit || isVerticalHit) {
+      double baseSpeed = speed + targetSpeed;
+      double targetSpeedRatio = targetSpeed / baseSpeed;
+      double speedRatio = speed / baseSpeed;
+      this.dx = -dx * targetSpeedRatio;
+      this.dy = -dy * targetSpeedRatio;
+      targetCar.dx = dx * speedRatio;
+      targetCar.dy = dy * speedRatio;
+      if(isHorizontalHit) {
+        this.dx *= -1;
+        targetCar.dx *= -1;
+      } else if(isVerticalHit) {
+        this.dy *= -1;
+        targetCar.dy *= -1;
+      }
+    }
 
   }
-  void update(Graphics g, int canvasWidth, int canvasHeight) {
+  void chaseTarget(Car target) {
+    double deltaX = target.x - this.x;
+    double deltaY = target.y - this.y;
+    deltaX *= 0.001;
+    deltaY *= 0.001;
+    this.ddx = deltaX;
+    this.ddy = deltaY;
+  }
+  void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
     x += dx;
     y += dy;
+    this.xs[currentAfterImage] = x;
+    this.ys[currentAfterImage] = y;
+    currentAfterImage++;
+    if(currentAfterImage == afterImageCount)currentAfterImage = 0;
     dx *= 0.99;
     dy *= 0.99;
     dx += ddx;
@@ -86,7 +135,20 @@ class Car extends Sprite {
       y = 0;
       dy *= -1;
     }
+
+
+    int i = currentAfterImage;
+    int j = 0;
+    while(true) {
+      Color color = (new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)0.4*((float)j/(afterImageCount - 1)))).darker().darker().darker();
+      g.setColor(color);
+      g.fillRect(canvasX + (int)xs[i], canvasY + (int)ys[i], (int)width, (int)height);
+      i++; if(i == afterImageCount) i = 0;
+      if(i == currentAfterImage) break;
+      j++;
+    }
+
     g.setColor(this.color);
-    g.fillRect((int)x, (int)y, (int)width, (int)height);
+    g.fillRect(canvasX + (int)x, canvasY + (int)y, (int)width, (int)height);
   }
 }
