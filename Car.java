@@ -6,8 +6,8 @@ class Car extends Sprite {
   private int currentAfterImage = 0;
   public double[] xs;
   public double[] ys;
-  public double width = 50;
-  public double height = 50;
+  public double width = 60;
+  public double height = 60;
   public double dx = 0, dy = 0;
   public double ddx = 0, ddy = 0;
   public double damage = 0; //max damage is 1.0
@@ -140,7 +140,8 @@ class Car extends Sprite {
     int i = currentAfterImage;
     int j = 0;
     while(true) {
-      Color color = (new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)0.4*((float)j/(afterImageCount - 1)))).darker().darker().darker();
+      //Color color = (new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)0.4*((float)j/(afterImageCount - 1)))).darker();
+      Color color = (new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)1.0)).darker().darker().darker();
       g.setColor(color);
       g.fillRect(canvasX + (int)xs[i], canvasY + (int)ys[i], (int)width, (int)height);
       i++; if(i == afterImageCount) i = 0;
@@ -148,6 +149,8 @@ class Car extends Sprite {
       j++;
     }
 
+  }
+  void drawBody(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
     g.setColor(this.color);
     g.fillRect(canvasX + (int)x, canvasY + (int)y, (int)width, (int)height);
   }

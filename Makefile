@@ -1,6 +1,7 @@
 .PHONY : run
 JAVA_FILES := $(wildcard *.java)
-run : Main.class
+CLASS_FILES := $(JAVA_FILES:%.java=%.class)
+run : $(CLASS_FILES)
 	java Main
-Main.class : $(JAVA_FILES)
-	javac $?
+%.class : %.java
+	javac $<

@@ -14,8 +14,8 @@ public class Gauge {
     this.value = value;
     this.color = color;
   }
-  void update(Graphics g, int canvasWidth, int canvasHeight) {
-    g.setColor(color);
+  void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
+    g.setColor(color.darker());
     g.fillRect(this.x, this.y, this.width, this.height);
     g.setColor(color.brighter());
     g.fillRect(this.x, this.y, (int)(this.width * this.value), this.height);
