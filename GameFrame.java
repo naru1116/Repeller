@@ -10,12 +10,10 @@ public class GameFrame extends ExitFrame {
   private Gauge playerDamageGauge;
   private Gauge enemyEnergyGauge;
   private Gauge enemhyDamageGauge;
-  private Percentage playerPercentage;
 
   public GameFrame() {
     int width = getWidth();
     int height = getHeight();
-    this.playerPercentage = new Percentage(200, 200, 200, Color.red);
     addMouseListener(new MouseListener() {
       public void mouseClicked(MouseEvent e) {}
       public void mouseEntered(MouseEvent e) {}
@@ -27,7 +25,7 @@ public class GameFrame extends ExitFrame {
       public void mouseReleased(MouseEvent e) {controlX = -1;}
     });
     addMouseMotionListener(new MouseMotionListener() {
-      public void mouseMoved(MouseEvent e) { System.out.println("Moved" + e.getX()); }
+      public void mouseMoved(MouseEvent e) {/* System.out.println("Moved" + e.getX()); */}
       public void mouseDragged(MouseEvent e) {
         controlX = e.getX();
         controlY = e.getY();
@@ -39,10 +37,10 @@ public class GameFrame extends ExitFrame {
       int width = getWidth();
       int height = getHeight();
       int gaugeHeight = 20;
-  this.playerEnergyGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0.6, new Color(82, 237, 150));
-  this.playerDamageGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0.2, new Color(255, 237, 150));
-  //this.enemyEnergyGauge;
-  //this.enemhyDamageGauge;
+      this.playerEnergyGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(82, 237, 150));
+      this.playerDamageGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(255, 237, 150));
+      //this.enemyEnergyGauge;
+      //this.enemhyDamageGauge;
     }
     this.isFirstPaint = true;
     int width = getWidth();
@@ -53,6 +51,7 @@ public class GameFrame extends ExitFrame {
 
 
     playerCar.hitTest(enemyCar);
+    playerDamageGauge.value = playerCar.damage;
 
 
     final double coefficient = 0.001;
@@ -70,14 +69,12 @@ public class GameFrame extends ExitFrame {
 
     playerCar.drawBody(g, 0, 0, width, height);
     enemyCar.drawBody(g, 0, 0, width, height);
- playerDamageGauge.update(g, 0, 0, width, height);
+    playerDamageGauge.update(g, 0, 0, width, height);
 
-  this.playerEnergyGauge.update(g, 0, 0, width, height);
-  //this.playerDamageGauge.update(g, 0, 0, width, height);
-  //this.enemyEnergyGauge.update(g, 0, 0, width, height);
-  //this.enemhyDamageGauge.update(g, 0, 0, width, height);
-   this.playerPercentage.update(g);
-
+    this.playerEnergyGauge.update(g, 0, 0, width, height);
+    //this.playerDamageGauge.update(g, 0, 0, width, height);
+    //this.enemyEnergyGauge.update(g, 0, 0, width, height);
+    //this.enemhyDamageGauge.update(g, 0, 0, width, height);
   }
 
   void mainLoop() {

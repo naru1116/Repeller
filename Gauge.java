@@ -4,7 +4,7 @@ public class Gauge {
   private int y;
   private int width;
   private int height;
-  private double value;
+  public double value;
   private Color color;
   Gauge(int x, int y, int width, int height, double value, Color color) {
     this.x = x;

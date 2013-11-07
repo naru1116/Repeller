@@ -88,6 +88,11 @@ class Car extends Sprite {
       double baseSpeed = speed + targetSpeed;
       double targetSpeedRatio = targetSpeed / baseSpeed;
       double speedRatio = speed / baseSpeed;
+
+      double damageDelta = Math.sqrt(targetSpeed) - Math.sqrt(speed);
+      this.damage += (damageDelta > 0 ? damageDelta : 0) * 0.01;
+      if(this.damage > 1) this.damage = 1;
+
       this.dx = -dx * targetSpeedRatio;
       this.dy = -dy * targetSpeedRatio;
       targetCar.dx = dx * speedRatio;
