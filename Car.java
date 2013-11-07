@@ -63,47 +63,32 @@ class Car extends Sprite {
     boolean isVerticalHit = hitTestLineSegments(x1, y1, x2, y2, x3, y3, x4, y4);
 
 
-    double speed = this.dx * this.dx + this.dy * this.dy;
-    double targetSpeed = targetCar.dx * targetCar.dx + targetCar.dy * targetCar.dy;
-    if(isHorizontalHit) {
-      if(isDy) {
-        this.y = targetCar.y - targetCar.height;
-      } else {
-        this.y = targetCar.y + targetCar.height;
-      }
-      this.dy *= -1;
-      targetCar.dy *= -1;
-    }
+    double mass = 1.0 - this.damage * 0.7;
+    double targetMass = 1.0 - targetCar.damage * 0.7;
 
-    if(isVerticalHit) {
-      if(isDx) {
-        this.x = targetCar.x - targetCar.width;
-      } else {
-        this.x = targetCar.x + targetCar.width;
-      }
-      this.dx *= -1;
-      targetCar.dx *= -1;
+    if(isHorizontalHit) {
+      this.y = targetCar.y  + (isDy ? -1 : 1) * targetCar.height;
+    } else if(isVerticalHit) {
+      this.x = targetCar.x  + (isDx ? -1 : 1) * targetCar.width;
     }
     if(isHorizontalHit || isVerticalHit) {
-      double baseSpeed = speed + targetSpeed;
-      double targetSpeedRatio = targetSpeed / baseSpeed;
-      double speedRatio = speed / baseSpeed;
+      double thisdx = this.dx;
+      double thisdy = this.dy;
+      double targetCardx = targetCar.dx;
+      double targetCardy = targetCar.dy;
 
-      double damageDelta = Math.sqrt(targetSpeed) - Math.sqrt(speed);
-      this.damage += (damageDelta > 0 ? damageDelta : 0) * 0.01;
+      this.dx = ((mass - 1.0) * this.dx + 2*1.0*targetCar.dx) / (mass + 1.0);
+      this.dy = ((mass - 1.0) * this.dy + 2*1.0*targetCar.dy) / (mass + 1.0);
+
+      targetCar.dx = ((targetMass - 1.0) * targetCar.dx + 2*1.0*thisdx) / (1.0 + targetMass);
+      targetCar.dy = ((targetMass - 1.0) * targetCar.dy + 2*1.0*thisdy) / (1.0 + targetMass);
+
+      double speed = Math.hypot(thisdx, thisdy);
+      double targetSpeed = Math.hypot(targetCardx, targetCardy);
+      this.damage += targetSpeed * 0.01;
       if(this.damage > 1) this.damage = 1;
-
-      this.dx = -dx * targetSpeedRatio;
-      this.dy = -dy * targetSpeedRatio;
-      targetCar.dx = dx * speedRatio;
-      targetCar.dy = dy * speedRatio;
-      if(isHorizontalHit) {
-        this.dx *= -1;
-        targetCar.dx *= -1;
-      } else if(isVerticalHit) {
-        this.dy *= -1;
-        targetCar.dy *= -1;
-      }
+      targetCar.damage += speed * 0.01;
+      if(targetCar.damage > 1) targetCar.damage = 1;
     }
 
   }

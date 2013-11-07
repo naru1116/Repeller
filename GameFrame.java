@@ -9,7 +9,7 @@ public class GameFrame extends ExitFrame {
   private Gauge playerEnergyGauge;
   private Gauge playerDamageGauge;
   private Gauge enemyEnergyGauge;
-  private Gauge enemhyDamageGauge;
+  private Gauge enemyDamageGauge;
 
   public GameFrame() {
     int width = getWidth();
@@ -37,10 +37,10 @@ public class GameFrame extends ExitFrame {
       int width = getWidth();
       int height = getHeight();
       int gaugeHeight = 20;
-      this.playerEnergyGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(82, 237, 150));
-      this.playerDamageGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(255, 237, 150));
-      //this.enemyEnergyGauge;
-      //this.enemhyDamageGauge;
+      this.playerEnergyGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
+      this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(60, 0, 0));
+      this.enemyEnergyGauge = new Gauge(0, gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));;
+      this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, new Color(60, 0, 0));
     }
     this.isFirstPaint = true;
     int width = getWidth();
@@ -52,6 +52,8 @@ public class GameFrame extends ExitFrame {
 
     playerCar.hitTest(enemyCar);
     playerDamageGauge.value = playerCar.damage;
+    enemyDamageGauge.value = enemyCar.damage;
+
 
 
     final double coefficient = 0.001;
@@ -69,12 +71,11 @@ public class GameFrame extends ExitFrame {
 
     playerCar.drawBody(g, 0, 0, width, height);
     enemyCar.drawBody(g, 0, 0, width, height);
-    playerDamageGauge.update(g, 0, 0, width, height);
-
+    this.playerDamageGauge.update(g, 0, 0, width, height);
     this.playerEnergyGauge.update(g, 0, 0, width, height);
-    //this.playerDamageGauge.update(g, 0, 0, width, height);
-    //this.enemyEnergyGauge.update(g, 0, 0, width, height);
-    //this.enemhyDamageGauge.update(g, 0, 0, width, height);
+    this.enemyEnergyGauge.update(g, 0, 0, width, height);
+    this.enemyDamageGauge.update(g, 0, 0, width, height);
+
   }
 
   void mainLoop() {
