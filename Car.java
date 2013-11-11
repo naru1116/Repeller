@@ -12,6 +12,7 @@ class Car extends Sprite {
   public double dx = 0, dy = 0;
   public double ddx = 0, ddy = 0;
   public double damage = 0; //max damage is 1.0
+  public boolean isDead = false;
   public double energy = 0; //energy is 1.0
   public Color color;
   public Car(int x, int y, int dx, int dy, Color color) {
@@ -129,19 +130,17 @@ class Car extends Sprite {
     dy *= 0.99;
     dx += ddx;
     dy += ddy;
-    if(x > canvasWidth - width) {
-      x = canvasWidth - width;
-      dx *= -1;
-    } else if(x  < 0) {
-      x = 0;
-      dx *= -1;
+
+    if(this.x > canvasWidth) {
+      this.isDead = true;
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(canvasWidth, (int)(this.y), canvasWidth, (int)(this.y + this.height), -5.0, 0.0, 200, this.color, this.color));
+    } else if(this.x + this.width < 0) {
+      this.isDead = true;
     }
-    if(y > canvasHeight - height) {
-      y = canvasHeight - height;
-      dy *= -1;
-    } else if(y  < 0) {
-      y = 0;
-      dy *= -1;
+    if(this.y > canvasHeight) {
+      this.isDead = true;
+    } else if(this.y + this.height  < 0) {
+      this.isDead = true;
     }
 
 

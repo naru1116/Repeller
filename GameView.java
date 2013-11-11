@@ -1,27 +1,21 @@
 import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
-public class GameFrame extends ExitFrame {
-  public GameFrame() {
-    int width = getWidth();
-    int height = getHeight();
-    addMouseListener(new MouseListener() {
-      public void mouseClicked(MouseEvent e) {}
-      public void mouseEntered(MouseEvent e) {}
-      public void mouseExited(MouseEvent e) {}
-      public void mousePressed(MouseEvent e) {
-        controlX = e.getX();
-        controlY = e.getY();
-      }
-      public void mouseReleased(MouseEvent e) {controlX = -1;}
-    });
-    addMouseMotionListener(new MouseMotionListener() {
-      public void mouseMoved(MouseEvent e) {/* System.out.println("Moved" + e.getX()); */}
-      public void mouseDragged(MouseEvent e) {
-        controlX = e.getX();
-        controlY = e.getY();
-      }
-    });
+public class GameView extends View {
+  private Car enemyCar = new Car(500, 500, 0, 0, Color.green);
+  private Car playerCar = new Car(300, 300, 0, 0, Color.red);
+  private int controlX = -1, controlY;
+  private boolean isFirstPaint = false;
+  private Gauge playerEnergyGauge;
+  private Gauge playerDamageGauge;
+  private Gauge enemyEnergyGauge;
+  private Gauge enemyDamageGauge;
+  private int width;
+  private int height;
+
+  public GameView(int width, int height) {
+    this.width = width;
+    this.height = height;
   }
   public void paint(Graphics g) {
     if(!this.isFirstPaint) {
@@ -78,15 +72,3 @@ public class GameFrame extends ExitFrame {
 
   }
 
-  void mainLoop() {
-    try {
-      while(true) {
-        Thread.sleep(20);
-        repaint();
-      }
-    } catch(Exception e) {
-      System.err.println(e);
-      System.exit(0);
-    }
-  }
-}
