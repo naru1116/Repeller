@@ -19,8 +19,8 @@ public class GameView extends View {
   }
   public void paint(Graphics g) {
     if(!this.isFirstPaint) {
-      int width = getWidth();
-      int height = getHeight();
+      int width = this.width();
+      int height = this.height();
       int gaugeHeight = 20;
       this.playerEnergyGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
       this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(60, 0, 0));
