@@ -66,15 +66,20 @@ public class GameFrame extends ExitFrame {
     }
 
     enemyCar.chaseTarget(playerCar);
-    playerCar.update(g, 0, 0, width, height);
-    enemyCar.update(g, 0, 0, width, height);
+    int xOrigin = 0;
+    int yOrigin = 0;
+    int boardHeight = height;
+    int boardWidth = width;
+    playerCar.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    enemyCar.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
 
-    playerCar.drawBody(g, 0, 0, width, height);
-    enemyCar.drawBody(g, 0, 0, width, height);
-    this.playerDamageGauge.update(g, 0, 0, width, height);
-    this.playerEnergyGauge.update(g, 0, 0, width, height);
-    this.enemyEnergyGauge.update(g, 0, 0, width, height);
-    this.enemyDamageGauge.update(g, 0, 0, width, height);
+    playerCar.drawBody(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    enemyCar.drawBody(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    this.playerDamageGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    this.playerEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    this.enemyEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    this.enemyDamageGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    ParticleEmitterManager.getInstance().update(g, xOrigin, yOrigin, boardWidth, boardHeight);
 
   }
 

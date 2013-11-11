@@ -19,9 +19,10 @@ public class Gauge {
   void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
     double valueDistance = this.value - this.animatingValue;
     this.animatingValue += valueDistance * 0.1;
-    g.setColor(color);
+    g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 60));
     g.fillRect(this.x, this.y, this.width, this.height);
-    g.setColor(color.brighter().brighter().brighter().brighter().brighter());
+    Color brightColor = color.brighter().brighter().brighter().brighter().brighter();
+    g.setColor(new Color(brightColor.getRed(), brightColor.getGreen(), brightColor.getBlue(), 100));
     g.fillRect(this.x, this.y, (int)(this.width * this.animatingValue), this.height);
   }
 }

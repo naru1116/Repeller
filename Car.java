@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.*;
 class Car extends Sprite {
   public double x = 100;
   public double y = 100;
@@ -66,10 +67,27 @@ class Car extends Sprite {
     double mass = 1.0 - this.damage * 0.7;
     double targetMass = 1.0 - targetCar.damage * 0.7;
 
+
     if(isHorizontalHit) {
       this.y = targetCar.y  + (isDy ? -1 : 1) * targetCar.height;
+      int y = (int)(this.y  + (isDy ? targetCar.height : 0));
+      int[] candidates = {(int)this.x,(int)(this.x + this.width),(int)(targetCar.x),(int)(targetCar.x + targetCar.width)};
+      Arrays.sort(candidates);
+      int minX = candidates[1];
+      int maxX = candidates[2];
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(minX, y, maxX, y, ((this.dx + targetCar.dx)/2.0), ((this.dy + targetCar.dy)/2.0), 100,
+            new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), 200),
+            new Color(targetCar.color.getRed(), targetCar.color.getGreen(), targetCar.color.getBlue(), 200)));
     } else if(isVerticalHit) {
       this.x = targetCar.x  + (isDx ? -1 : 1) * targetCar.width;
+      int x = (int)(this.x  + (isDx ? targetCar.width : 0));
+      int[] candidates = {(int)this.y,(int)(this.y + this.height),(int)(targetCar.y),(int)(targetCar.y + targetCar.height)};
+      Arrays.sort(candidates);
+      int minY = candidates[1];
+      int maxY = candidates[2];
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(x, minY, x, maxY,((this.dx + targetCar.dx)/2.0), ((this.dy + targetCar.dy)/2.0), 100,
+            new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), 200),
+            new Color(targetCar.color.getRed(), targetCar.color.getGreen(), targetCar.color.getBlue(), 200)));
     }
     if(isHorizontalHit || isVerticalHit) {
       double thisdx = this.dx;
@@ -133,7 +151,7 @@ class Car extends Sprite {
       //Color color = (new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)0.4*((float)j/(afterImageCount - 1)))).darker();
       Color color = (new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)1.0)).darker().darker().darker();
       g.setColor(color);
-      g.fillRect(canvasX + (int)xs[i], canvasY + (int)ys[i], (int)width, (int)height);
+      g.fillRect((int)xs[i], (int)ys[i], (int)width, (int)height);
       i++; if(i == afterImageCount) i = 0;
       if(i == currentAfterImage) break;
       j++;
@@ -142,6 +160,6 @@ class Car extends Sprite {
   }
   void drawBody(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
     g.setColor(this.color);
-    g.fillRect(canvasX + (int)x, canvasY + (int)y, (int)width, (int)height);
+    g.fillRect((int)x, (int)y, (int)width, (int)height);
   }
 }
