@@ -1,8 +1,10 @@
 import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
+import java.applet.AudioClip;
+import java.applet.Applet;
 public class GameView extends View {
-  private Car enemyCar = new Car(500, 500, 0, 0, Color.green);
+  private EnemyCar enemyCar = new EnemyCar(500, 500, 0, 0, Color.green);
   private Car playerCar = new Car(300, 300, 0, 0, Color.red);
   public int controlX = -1, controlY;
   private boolean isFirstPaint = false;
@@ -12,7 +14,7 @@ public class GameView extends View {
   private Gauge enemyDamageGauge;
   private int width;
   private int height;
-
+  private AudioClip gameOverAudio;
   public GameView(GameFrame gameFrame, int width, int height) {
     super(gameFrame);
     this.width = width;
@@ -23,6 +25,7 @@ public class GameView extends View {
     this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(60, 0, 0));
     this.enemyEnergyGauge = new Gauge(0, gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));;
     this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, new Color(60, 0, 0));
+    gameOverAudio = Applet.newAudioClip(getClass().getResource("gameover.wav"));
   }
 
   public void paint(Graphics g) {
@@ -31,13 +34,11 @@ public class GameView extends View {
 
     playerCar.hitTest(enemyCar);
 
-
-
     playerDamageGauge.value = playerCar.damage;
     enemyDamageGauge.value = enemyCar.damage;
 
 
-    final double coefficient = 0.001;
+    final double coefficient = 0.003;
     if(controlX != -1) {
       playerCar.ddx = (controlX - (playerCar.x + (playerCar.width / 2))) * coefficient;
       playerCar.ddy = (controlY - (playerCar.y + (playerCar.width / 2))) * coefficient;
@@ -46,7 +47,8 @@ public class GameView extends View {
       playerCar.ddy = 0;
     }
 
-    enemyCar.chaseTarget(playerCar);
+    enemyCar.chaseTarget(playerCar, width, height);
+
     int xOrigin = 0;
     int yOrigin = 0;
     int boardHeight = height;
@@ -63,9 +65,11 @@ public class GameView extends View {
 
     if(enemyCar.isDead) {
       View view = new GameOverView(this.gameFrame, this.width, this.height);
+      gameOverAudio.play();
       transitionToView(view);
     } else if(playerCar.isDead) {
       View view = new GameOverView(this.gameFrame, this.width, this.height);
+      gameOverAudio.play();
       transitionToView(view);
     }
   }

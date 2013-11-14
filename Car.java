@@ -5,6 +5,7 @@ class Car extends Sprite {
   public double y = 100;
   private final int afterImageCount = 20;
   private int currentAfterImage = 0;
+  public int hitTime = 0;
   public double[] xs;
   public double[] ys;
   public double width = 60;
@@ -65,8 +66,8 @@ class Car extends Sprite {
     boolean isVerticalHit = hitTestLineSegments(x1, y1, x2, y2, x3, y3, x4, y4);
 
 
-    double mass = 1.0 - this.damage * 0.7;
-    double targetMass = 1.0 - targetCar.damage * 0.7;
+    double mass = 1.0 - this.damage * 0.99;
+    double targetMass = 1.0 - targetCar.damage * 0.99;
 
 
     if(isHorizontalHit) {
@@ -108,18 +109,16 @@ class Car extends Sprite {
       if(this.damage > 1) this.damage = 1;
       targetCar.damage += speed * 0.01;
       if(targetCar.damage > 1) targetCar.damage = 1;
+      targetCar.hitTime = 30;
+      this.hitTime = 30;
     }
 
   }
-  void chaseTarget(Car target) {
-    double deltaX = target.x - this.x;
-    double deltaY = target.y - this.y;
-    deltaX *= 0.001;
-    deltaY *= 0.001;
-    this.ddx = deltaX;
-    this.ddy = deltaY;
-  }
+
   void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
+    if(hitTime-- <= 0) {
+      hitTime = 0;
+    }
     x += dx;
     y += dy;
     this.xs[currentAfterImage] = x;
