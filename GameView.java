@@ -62,10 +62,10 @@ public class GameView extends View {
     this.enemyDamageGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
 
     if(enemyCar.isDead) {
-      View view = GameOverView(this.gameFrame, this.width, this.height);
+      View view = new GameOverView(this.gameFrame, this.width, this.height);
       transitionToView(view);
     } else if(playerCar.isDead) {
-      View view = GameOverView(this.gameFrame, this.width, this.height);
+      View view = new GameOverView(this.gameFrame, this.width, this.height);
       transitionToView(view);
     }
   }
