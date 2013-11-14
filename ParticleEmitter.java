@@ -23,7 +23,7 @@ public class ParticleEmitter {
       this.ddy = ddy;
       this.color = color;
     }
-    public void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
+    public void update(Graphics g,  int canvasWidth, int canvasHeight) {
       this.dx += this.ddx;
       this.dy += this.ddy;
       this.x += this.dx;
@@ -51,11 +51,11 @@ public class ParticleEmitter {
       particles.add(new Particle(x1 + randp*(x2 - x1), y1 + randp*(y2 - y1),dx, dy,  0.5*distance*Math.cos(angle) + dr, 0.5*distance*Math.sin(angle) + dl, random.nextInt(2) == 0 ? color1 : color2));
     }
   }
-  void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
+  void update(Graphics g, int canvasWidth, int canvasHeight) {
     time += 0.001;
     if(time > 1.0) this.deleted = true;
     for(Particle particle : particles) {
-      particle.update(g, canvasX, canvasY, canvasWidth, canvasHeight);
+      particle.update(g, canvasWidth, canvasHeight);
     }
   }
 }

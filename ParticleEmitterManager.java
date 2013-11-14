@@ -11,9 +11,9 @@ public class ParticleEmitterManager {
     particleEmitters.add(particleEmitter);
   }
 
-  public void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
+  public void update(Graphics g, int canvasWidth, int canvasHeight) {
     for(ParticleEmitter particleEmitter : particleEmitters) {
-      particleEmitter.update(g, canvasX, canvasY, canvasWidth, canvasHeight);
+      particleEmitter.update(g, canvasWidth, canvasHeight);
     }
     for (int i = particleEmitters.size() - 1; i >= 0; i--) {
       if (particleEmitters.get(i).deleted) {

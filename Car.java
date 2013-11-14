@@ -155,7 +155,6 @@ class Car extends Sprite {
       if(i == currentAfterImage) break;
       j++;
     }
-
   }
   void drawBody(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
     g.setColor(this.color);

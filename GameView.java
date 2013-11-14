@@ -13,35 +13,28 @@ public class GameView extends View {
   private int width;
   private int height;
 
-  public GameView(int width, int height) {
+  public GameView(GameFrame gameFrame, int width, int height) {
+    super(gameFrame);
     this.width = width;
     this.height = height;
-  }
-  public void paint(Graphics g) {
-    if(!this.isFirstPaint) {
-      int width = this.width;
-      int height = this.height;
-      int gaugeHeight = 20;
-      this.playerEnergyGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
-      this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(60, 0, 0));
-      this.enemyEnergyGauge = new Gauge(0, gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));;
-      this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, new Color(60, 0, 0));
-    }
-    this.isFirstPaint = true;
-    int width = this.width;
-    int height = this.height;
 
+    int gaugeHeight = 20;
+    this.playerEnergyGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
+    this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(60, 0, 0));
+    this.enemyEnergyGauge = new Gauge(0, gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));;
+    this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, new Color(60, 0, 0));
+  }
+
+  public void paint(Graphics g) {
     g.setColor(Color.black);
     g.fillRect(0, 0, (int)width, (int)height);
 
     playerCar.hitTest(enemyCar);
 
 
-    if(playerCar.isDead)
 
     playerDamageGauge.value = playerCar.damage;
     enemyDamageGauge.value = enemyCar.damage;
-
 
 
     final double coefficient = 0.001;
@@ -67,10 +60,17 @@ public class GameView extends View {
     this.playerEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
     this.enemyEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
     this.enemyDamageGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
-    ParticleEmitterManager.getInstance().update(g, xOrigin, yOrigin, boardWidth, boardHeight);
 
+    if(enemyCar.isDead) {
+      View view = GameOverView(this.gameFrame, this.width, this.height);
+      transitionToView(view);
+    } else if(playerCar.isDead) {
+      View view = GameOverView(this.gameFrame, this.width, this.height);
+      transitionToView(view);
+    }
   }
 
+/////////////////////////////MouseListener/////////////////////////////////////////////////////
   public void mouseClicked(MouseEvent e) {}
   public void mouseEntered(MouseEvent e) {}
   public void mouseExited(MouseEvent e) {}
@@ -79,6 +79,7 @@ public class GameView extends View {
     controlY = e.getY();
   }
   public void mouseReleased(MouseEvent e) {controlX = -1;}
+/////////////////////////////MouseListener////END//////////////////////////////////////////////
 
 }
 
