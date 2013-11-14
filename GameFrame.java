@@ -4,26 +4,17 @@ import java.awt.event.*;
 public class GameFrame extends ExitFrame {
   View currentView;
   public GameFrame() {
-    int width = getWidth();
-    int height = getHeight();
-    currentView = new GameView();
-    addMouseListener(new MouseListener() {
-      public void mouseClicked(MouseEvent e) {}
-      public void mouseEntered(MouseEvent e) {}
-      public void mouseExited(MouseEvent e) {}
-      public void mousePressed(MouseEvent e) {
-        controlX = e.getX();
-        controlY = e.getY();
-      }
-      public void mouseReleased(MouseEvent e) {controlX = -1;}
-    });
-    addMouseMotionListener(new MouseMotionListener() {
-      public void mouseMoved(MouseEvent e) {/* System.out.println("Moved" + e.getX()); */}
-      public void mouseDragged(MouseEvent e) {
-        controlX = e.getX();
-        controlY = e.getY();
-      }
-    });
+    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+    GameView gameView = new GameView(dimension.width, dimension.height);
+    currentView = gameView;
+    addMouseListener(gameView);
+   // addMouseMotionListener(new MouseMotionListener() {
+   //   public void mouseMoved(MouseEvent e) {/* System.out.println("Moved" + e.getX()); */}
+   //   public void mouseDragged(MouseEvent e) {
+   //     controlX = e.getX();
+   //     controlY = e.getY();
+   //   }
+   // });
   }
 
   public void paint(Graphics g) {

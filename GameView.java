@@ -4,7 +4,7 @@ import java.awt.event.*;
 public class GameView extends View {
   private Car enemyCar = new Car(500, 500, 0, 0, Color.green);
   private Car playerCar = new Car(300, 300, 0, 0, Color.red);
-  private int controlX = -1, controlY;
+  public int controlX = -1, controlY;
   private boolean isFirstPaint = false;
   private Gauge playerEnergyGauge;
   private Gauge playerDamageGauge;
@@ -19,8 +19,8 @@ public class GameView extends View {
   }
   public void paint(Graphics g) {
     if(!this.isFirstPaint) {
-      int width = this.width();
-      int height = this.height();
+      int width = this.width;
+      int height = this.height;
       int gaugeHeight = 20;
       this.playerEnergyGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
       this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(60, 0, 0));
@@ -28,12 +28,11 @@ public class GameView extends View {
       this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, new Color(60, 0, 0));
     }
     this.isFirstPaint = true;
-    int width = getWidth();
-    int height = getHeight();
+    int width = this.width;
+    int height = this.height;
 
     g.setColor(Color.black);
     g.fillRect(0, 0, (int)width, (int)height);
-
 
     playerCar.hitTest(enemyCar);
 
@@ -71,4 +70,15 @@ public class GameView extends View {
     ParticleEmitterManager.getInstance().update(g, xOrigin, yOrigin, boardWidth, boardHeight);
 
   }
+
+  public void mouseClicked(MouseEvent e) {}
+  public void mouseEntered(MouseEvent e) {}
+  public void mouseExited(MouseEvent e) {}
+  public void mousePressed(MouseEvent e) {
+    controlX = e.getX();
+    controlY = e.getY();
+  }
+  public void mouseReleased(MouseEvent e) {controlX = -1;}
+
+}
 
