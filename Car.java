@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.util.*;
-class Car extends Sprite {
+class Car {
   public double x = 100;
   public double y = 100;
   private final int afterImageCount = 20;
