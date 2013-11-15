@@ -5,7 +5,6 @@ public class GameView extends View {
   private EnemyCar enemyCar;
   private Car playerCar;
   public int controlX = -1, controlY;
-  private boolean isFirstPaint = false;
   private Gauge playerDamageGauge;
   private Gauge enemyDamageGauge;
   private int width;

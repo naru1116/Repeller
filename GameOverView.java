@@ -8,6 +8,7 @@ public class GameOverView extends View {
   private int height;
   private boolean isLooser;
   private double time = 0.0;
+  private boolean isClosing = false;
 
   public GameOverView(GameFrame gameFrame, int width, int height, boolean isLooser) {
     super(gameFrame);
@@ -24,16 +25,29 @@ public class GameOverView extends View {
     else img = gameFrame.getToolkit().getImage("ng.png");
     int destX = width/2 - 250;
     int destY = height/2 - 250;
-    time += 0.04;
-    if(time > 1) time = 1;
-    double coefficient = (-(time - 1.0)*(time - 1.0) + 1.0);
-    g.drawImage(img, destX, (int)(-300 + coefficient * (300 + destY)), null);
+
+
+    if(!isClosing) {
+      time += 0.04;
+      if(time > 1) time = 1;
+      double coefficient = (-(time - 1.0)*(time - 1.0) + 1.0);
+      g.drawImage(img, destX, (int)(-300 + coefficient * (300 + destY)), null);
+    } else {
+      time -= 0.04;
+      if(time < 0) {
+        View view = new GameView(gameFrame, width, height);
+        this.gameFrame.transitionToView(view);
+      }
+      double coefficient = (-(time - 1.0)*(time - 1.0) + 1.0);
+      g.drawImage(img, destX, (int)(300 + height + coefficient * (-300 - height + destY)), null);
+    }
   }
 
 /////////////////////////////MouseListener/////////////////////////////////////////////////////
   public void mouseClicked(MouseEvent e) {
-    View view = new GameView(gameFrame, width, height);
-    if(time == 1)this.gameFrame.transitionToView(view);
+    if(time == 1) {
+      this.isClosing = true;
+    }
   }
   public void mouseEntered(MouseEvent e) {}
   public void mouseExited(MouseEvent e) {}
