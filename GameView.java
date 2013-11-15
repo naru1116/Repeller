@@ -33,9 +33,7 @@ public class GameView extends View {
     playerCar.hitTest(enemyCar);
 
     playerDamageGauge.value = playerCar.damage;
-    if(playerCar.damage >= 0.5) SoundManager.getInstance().play("yourdamage50");
     enemyDamageGauge.value = enemyCar.damage;
-    if(enemyCar.damage >= 0.5) SoundManager.getInstance().play("enemydamage50");
 
 
     final double coefficient = 0.003;
