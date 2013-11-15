@@ -5,6 +5,7 @@ class EnemyCar extends Car {
 
   final int StatusPassive = 0;
   final int StatusAgressive = 1;
+  final int StatusOdd = 2;
 
   private int statusTransitionCount;
 
@@ -21,10 +22,13 @@ class EnemyCar extends Car {
       statusTransitionCount =  10 + random.nextInt(60);
       switch(status){
         case StatusPassive:
-          status = StatusAgressive;
+            status = random.nextInt(1) == 0 ? StatusAgressive : StatusOdd;
             break;
         case StatusAgressive:
-            status = StatusPassive;
+            status = random.nextInt(1) == 0 ? StatusPassive : StatusOdd;
+            break;
+        case StatusOdd:
+            status = random.nextInt(1) == 0 ? StatusPassive : StatusAgressive;
             break;
         default:
           break;
@@ -62,6 +66,21 @@ class EnemyCar extends Car {
         if(deltaY < -maxDelta) deltaY = -maxDelta;
         this.ddx = deltaX;
         this.ddy = deltaY;
+      }
+        break;
+      case StatusOdd: {
+        if(random.nextInt(60) == 0) {
+          this.dx *= -1;
+        }
+        if(random.nextInt(60) == 0) {
+          this.dy *= -1;
+        }
+        if(random.nextInt(60) == 0) {
+          double dy = this.dy;
+          double dx = this.dx;
+          this.dx = dy;
+          this.dy = dx;
+        }
       }
         break;
       default:

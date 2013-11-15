@@ -6,9 +6,7 @@ public class GameView extends View {
   private Car playerCar;
   public int controlX = -1, controlY;
   private boolean isFirstPaint = false;
-  private Gauge playerEnergyGauge;
   private Gauge playerDamageGauge;
-  private Gauge enemyEnergyGauge;
   private Gauge enemyDamageGauge;
   private int width;
   private int height;
@@ -17,14 +15,14 @@ public class GameView extends View {
     this.width = width;
     this.height = height;
     Random rnd = new Random();
-    this.enemyCar = new EnemyCar(width/2 + 100 + rnd.nextInt(400), height/2 - 100 + rnd.nextInt(400), 0, 0, new Color(255, 80, 0));
-    this.playerCar = new Car(width/2 - 100 - rnd.nextInt(400), height/2 - 100 + rnd.nextInt(400), 0, 0, new Color(0, 255, 150));
+    Color playerColor = new Color(50, 180, 220);
+    Color enemyColor = new Color(200, 30, 0);
+    this.enemyCar = new EnemyCar(width/2 + 100 + rnd.nextInt(400), height/2 - 100 + rnd.nextInt(400), 0, 0, enemyColor);
+    this.playerCar = new Car(width/2 - 100 - rnd.nextInt(400), height/2 - 100 + rnd.nextInt(400), 0, 0, playerColor);
 
     int gaugeHeight = 20;
-    this.playerEnergyGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
-    this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(0, 255, 150));
-    this.enemyEnergyGauge = new Gauge(0, gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
-    this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, new Color(255, 80, 0));
+    this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, playerColor);
+    this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, enemyColor);
   }
 
   public void paint(Graphics g) {
@@ -58,8 +56,6 @@ public class GameView extends View {
     playerCar.drawBody(g, xOrigin, yOrigin, boardWidth, boardHeight);
     enemyCar.drawBody(g, xOrigin, yOrigin, boardWidth, boardHeight);
     this.playerDamageGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
-    //this.playerEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
-    //this.enemyEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
     this.enemyDamageGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
 
     if(enemyCar.isDead) {
