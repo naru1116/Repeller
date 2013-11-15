@@ -113,7 +113,7 @@ class Car extends Sprite {
       if(targetCar.damage > 1) targetCar.damage = 1;
       targetCar.hitTime = 30;
       this.hitTime = 30;
-      SoundManager.getInstance().repel();
+      SoundManager.getInstance().play("repel");
     }
 
   }

@@ -5,3 +5,6 @@ run : $(CLASS_FILES)
 	java Main
 %.class : %.java
 	javac $<
+.PHONY : clean
+clean :
+	rm -rf *.class

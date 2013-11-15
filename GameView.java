@@ -6,7 +6,9 @@ public class GameView extends View {
   private Car playerCar;
   public int controlX = -1, controlY;
   private Gauge playerDamageGauge;
+  private double playerDamageGaugeAnnounceTime = 0.0;
   private Gauge enemyDamageGauge;
+  private double enemyDamageGaugeAnnounceTime = 0.0;
   private int width;
   private int height;
   public GameView(GameFrame gameFrame, int width, int height) {
@@ -31,7 +33,9 @@ public class GameView extends View {
     playerCar.hitTest(enemyCar);
 
     playerDamageGauge.value = playerCar.damage;
+    if(playerCar.damage >= 0.5) SoundManager.getInstance().play("yourdamage50");
     enemyDamageGauge.value = enemyCar.damage;
+    if(enemyCar.damage >= 0.5) SoundManager.getInstance().play("enemydamage50");
 
 
     final double coefficient = 0.003;
@@ -59,13 +63,13 @@ public class GameView extends View {
 
     if(enemyCar.isDead) {
       View view = new GameOverView(this.gameFrame, this.width, this.height, false);
-      SoundManager.getInstance().dissapear();
-      SoundManager.getInstance().excellent();
+      SoundManager.getInstance().play("dissapear");
+      SoundManager.getInstance().play("excellent");
       transitionToView(view);
     } else if(playerCar.isDead) {
       View view = new GameOverView(this.gameFrame, this.width, this.height, true);
-      SoundManager.getInstance().dissapear();
-      SoundManager.getInstance().bad();
+      SoundManager.getInstance().play("dissapear");
+      SoundManager.getInstance().play("bad");
       transitionToView(view);
     }
   }
