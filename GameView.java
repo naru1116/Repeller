@@ -1,11 +1,9 @@
 import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
-import java.applet.AudioClip;
-import java.applet.Applet;
 public class GameView extends View {
-  private EnemyCar enemyCar = new EnemyCar(500, 500, 0, 0, Color.green);
-  private Car playerCar = new Car(300, 300, 0, 0, Color.red);
+  private EnemyCar enemyCar;
+  private Car playerCar;
   public int controlX = -1, controlY;
   private boolean isFirstPaint = false;
   private Gauge playerEnergyGauge;
@@ -14,18 +12,19 @@ public class GameView extends View {
   private Gauge enemyDamageGauge;
   private int width;
   private int height;
-  private AudioClip gameOverAudio;
   public GameView(GameFrame gameFrame, int width, int height) {
     super(gameFrame);
     this.width = width;
     this.height = height;
+    Random rnd = new Random();
+    this.enemyCar = new EnemyCar(width/2 + 100 + rnd.nextInt(400), height/2 - 100 + rnd.nextInt(400), 0, 0, new Color(255, 80, 0));
+    this.playerCar = new Car(width/2 - 100 - rnd.nextInt(400), height/2 - 100 + rnd.nextInt(400), 0, 0, new Color(0, 255, 150));
 
     int gaugeHeight = 20;
     this.playerEnergyGauge = new Gauge(0, height - 2*gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
-    this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(60, 0, 0));
-    this.enemyEnergyGauge = new Gauge(0, gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));;
-    this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, new Color(60, 0, 0));
-    gameOverAudio = Applet.newAudioClip(getClass().getResource("gameover.wav"));
+    this.playerDamageGauge = new Gauge(0, height - gaugeHeight, width, gaugeHeight, 0, new Color(0, 255, 150));
+    this.enemyEnergyGauge = new Gauge(0, gaugeHeight, width, gaugeHeight, 0, new Color(0, 60, 60));
+    this.enemyDamageGauge = new Gauge(0, 0, width, gaugeHeight, 0, new Color(255, 80, 0));
   }
 
   public void paint(Graphics g) {
@@ -59,17 +58,15 @@ public class GameView extends View {
     playerCar.drawBody(g, xOrigin, yOrigin, boardWidth, boardHeight);
     enemyCar.drawBody(g, xOrigin, yOrigin, boardWidth, boardHeight);
     this.playerDamageGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
-    this.playerEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
-    this.enemyEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    //this.playerEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
+    //this.enemyEnergyGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
     this.enemyDamageGauge.update(g, xOrigin, yOrigin, boardWidth, boardHeight);
 
     if(enemyCar.isDead) {
-      View view = new GameOverView(this.gameFrame, this.width, this.height);
-      gameOverAudio.play();
+      View view = new GameOverView(this.gameFrame, this.width, this.height, false);
       transitionToView(view);
     } else if(playerCar.isDead) {
-      View view = new GameOverView(this.gameFrame, this.width, this.height);
-      gameOverAudio.play();
+      View view = new GameOverView(this.gameFrame, this.width, this.height, true);
       transitionToView(view);
     }
   }

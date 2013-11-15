@@ -28,10 +28,11 @@ public class ParticleEmitter {
       this.dy += this.ddy;
       this.x += this.dx;
       this.y += this.dy;
-      this.opacity -= 0.01;
+      this.opacity -= 0.005;
       if(this.opacity < 0) this.opacity = 0;
       g.setColor(new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), (int)(this.color.getAlpha() * this.opacity)));
-      g.fillRect((int)this.x, (int)this.y, 4, 4);
+      int size = 2 + (int)(30 * (1.0 - this.opacity));
+      g.fillRect((int)this.x - size/2, (int)this.y - size/2, size, size);
     }
   }
 
@@ -48,7 +49,7 @@ public class ParticleEmitter {
       double dr = random.nextDouble();
       double dl = random.nextDouble();
       double randp = random.nextDouble();
-      particles.add(new Particle(x1 + randp*(x2 - x1), y1 + randp*(y2 - y1),dx, dy,  0.5*distance*Math.cos(angle) + dr, 0.5*distance*Math.sin(angle) + dl, random.nextInt(2) == 0 ? color1 : color2));
+      particles.add(new Particle(x1 + randp*(x2 - x1), y1 + randp*(y2 - y1), dx, dy,  0.5*distance*Math.cos(angle) + dr, 0.5*distance*Math.sin(angle) + dl, random.nextInt(2) == 0 ? color1 : color2));
     }
   }
   void update(Graphics g, int canvasWidth, int canvasHeight) {

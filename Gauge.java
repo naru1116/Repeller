@@ -21,8 +21,8 @@ public class Gauge {
     this.animatingValue += valueDistance * 0.1;
     g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 60));
     g.fillRect(this.x, this.y, this.width, this.height);
-    Color brightColor = color.brighter().brighter().brighter().brighter().brighter();
-    g.setColor(new Color(brightColor.getRed(), brightColor.getGreen(), brightColor.getBlue(), 100));
+    Color brightColor = color;
+    g.setColor(new Color(brightColor.getRed(), brightColor.getGreen(), brightColor.getBlue(), 255));
     g.fillRect(this.x, this.y, (int)(this.width * this.animatingValue), this.height);
   }
 }

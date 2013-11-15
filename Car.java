@@ -8,8 +8,8 @@ class Car extends Sprite {
   public int hitTime = 0;
   public double[] xs;
   public double[] ys;
-  public double width = 60;
-  public double height = 60;
+  public double width = 40;
+  public double height = 40;
   public double dx = 0, dy = 0;
   public double ddx = 0, ddy = 0;
   public double damage = 0; //max damage is 1.0
@@ -77,7 +77,8 @@ class Car extends Sprite {
       Arrays.sort(candidates);
       int minX = candidates[1];
       int maxX = candidates[2];
-      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(minX, y, maxX, y, ((this.dx + targetCar.dx)/2.0), ((this.dy + targetCar.dy)/2.0), 100,
+      int particleCount = (int)(10 * Math.hypot(dx, dy));
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(minX, y, maxX, y, ((this.dx + targetCar.dx)/2.0), ((this.dy + targetCar.dy)/2.0), particleCount,
             new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), 200),
             new Color(targetCar.color.getRed(), targetCar.color.getGreen(), targetCar.color.getBlue(), 200)));
     } else if(isVerticalHit) {
@@ -87,7 +88,8 @@ class Car extends Sprite {
       Arrays.sort(candidates);
       int minY = candidates[1];
       int maxY = candidates[2];
-      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(x, minY, x, maxY,((this.dx + targetCar.dx)/2.0), ((this.dy + targetCar.dy)/2.0), 100,
+      int particleCount = (int)(10 * Math.hypot(dx, dy));
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(x, minY, x, maxY,((this.dx + targetCar.dx)/2.0), ((this.dy + targetCar.dy)/2.0), particleCount,
             new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), 200),
             new Color(targetCar.color.getRed(), targetCar.color.getGreen(), targetCar.color.getBlue(), 200)));
     }
@@ -116,6 +118,8 @@ class Car extends Sprite {
   }
 
   void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
+    this.damage -= 0.001;
+    if(this.damage < 0) this.damage = 0;
     if(hitTime-- <= 0) {
       hitTime = 0;
     }
@@ -132,17 +136,18 @@ class Car extends Sprite {
 
     if(this.x > canvasWidth) {
       this.isDead = true;
-      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(canvasWidth, (int)(this.y), canvasWidth, (int)(this.y + this.height), -5.0, 0.0, 200, this.color, this.color));
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(canvasWidth, (int)(this.y), canvasWidth, (int)(this.y + this.height), -10.0, 0.0, 400, this.color, this.color));
     } else if(this.x + this.width < 0) {
       this.isDead = true;
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter(0, (int)(this.y), 0, (int)(this.y + this.height), 10.0, 0.0, 400, this.color, this.color));
     }
     if(this.y > canvasHeight) {
       this.isDead = true;
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter((int)(this.x), canvasHeight + 20,  (int)(this.x + this.width), canvasHeight + 20, 0.0, -10.0, 400, this.color, this.color));
     } else if(this.y + this.height  < 0) {
       this.isDead = true;
+      ParticleEmitterManager.getInstance().addParticleEmitter(new ParticleEmitter((int)(this.x), -20, (int)(this.x + this.width), -20, 0.0, 10.0, 400, this.color, this.color));
     }
-
-
     int i = currentAfterImage;
     int j = 0;
     while(true) {

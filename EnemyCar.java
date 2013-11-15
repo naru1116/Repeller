@@ -17,17 +17,14 @@ class EnemyCar extends Car {
     statusTransitionCount = 10 + random.nextInt(60);
   }
   void chaseTarget(Car target, int width, int height) {
-    System.out.println(statusTransitionCount);
     if(statusTransitionCount-- <= 0) {
       statusTransitionCount =  10 + random.nextInt(60);
       switch(status){
         case StatusPassive:
-          System.out.println("agressive");
           status = StatusAgressive;
             break;
         case StatusAgressive:
             status = StatusPassive;
-          System.out.println("passive");
             break;
         default:
           break;
