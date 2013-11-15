@@ -6,6 +6,7 @@ public class GameFrame extends ExitFrame {
   private Dimension dimension;
   public GameFrame() {
     this.dimension = Toolkit.getDefaultToolkit().getScreenSize();
+    SoundManager.getInstance().bgm();
     currentView  = new GameView(this, this.dimension.width, this.dimension.height);
     addMouseListener(currentView);
   }

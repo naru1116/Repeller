@@ -31,7 +31,7 @@ public class ParticleEmitter {
       this.opacity -= 0.005;
       if(this.opacity < 0) this.opacity = 0;
       g.setColor(new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), (int)(this.color.getAlpha() * this.opacity)));
-      int size = 2 + (int)(30 * (1.0 - this.opacity));
+      int size = 2 + (int)(34 * (1.0 - this.opacity));
       g.fillRect((int)this.x - size/2, (int)this.y - size/2, size, size);
     }
   }
@@ -53,7 +53,7 @@ public class ParticleEmitter {
     }
   }
   void update(Graphics g, int canvasWidth, int canvasHeight) {
-    time += 0.001;
+    time += 0.005;
     if(time > 1.0) this.deleted = true;
     for(Particle particle : particles) {
       particle.update(g, canvasWidth, canvasHeight);

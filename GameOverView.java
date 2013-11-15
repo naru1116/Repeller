@@ -33,7 +33,7 @@ public class GameOverView extends View {
 /////////////////////////////MouseListener/////////////////////////////////////////////////////
   public void mouseClicked(MouseEvent e) {
     View view = new GameView(gameFrame, width, height);
-    this.gameFrame.transitionToView(view);
+    if(time == 1)this.gameFrame.transitionToView(view);
   }
   public void mouseEntered(MouseEvent e) {}
   public void mouseExited(MouseEvent e) {}

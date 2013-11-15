@@ -99,11 +99,11 @@ class Car extends Sprite {
       double targetCardx = targetCar.dx;
       double targetCardy = targetCar.dy;
 
-      this.dx = ((mass - 1.0) * this.dx + 2*1.0*targetCar.dx) / (mass + 1.0);
-      this.dy = ((mass - 1.0) * this.dy + 2*1.0*targetCar.dy) / (mass + 1.0);
+      this.dx = (this.damage + 1.0) * (((mass - 1.0) * this.dx + 2*1.0*targetCar.dx) / (mass + 1.0));
+      this.dy = (this.damage + 1.0) * (((mass - 1.0) * this.dy + 2*1.0*targetCar.dy) / (mass + 1.0));
 
-      targetCar.dx = ((targetMass - 1.0) * targetCar.dx + 2*1.0*thisdx) / (1.0 + targetMass);
-      targetCar.dy = ((targetMass - 1.0) * targetCar.dy + 2*1.0*thisdy) / (1.0 + targetMass);
+      targetCar.dx = (targetCar.damage + 1.0) * (((targetMass - 1.0) * targetCar.dx + 2*1.0*thisdx) / (1.0 + targetMass));
+      targetCar.dy = (targetCar.damage + 1.0) * (((targetMass - 1.0) * targetCar.dy + 2*1.0*thisdy) / (1.0 + targetMass));
 
       double speed = Math.hypot(thisdx, thisdy);
       double targetSpeed = Math.hypot(targetCardx, targetCardy);
@@ -113,6 +113,7 @@ class Car extends Sprite {
       if(targetCar.damage > 1) targetCar.damage = 1;
       targetCar.hitTime = 30;
       this.hitTime = 30;
+      SoundManager.getInstance().repel();
     }
 
   }

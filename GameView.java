@@ -15,8 +15,8 @@ public class GameView extends View {
     this.width = width;
     this.height = height;
     Random rnd = new Random();
-    Color playerColor = new Color(50, 180, 220);
-    Color enemyColor = new Color(200, 30, 0);
+    Color playerColor = new Color(50, 240, 220);
+    Color enemyColor = new Color(230, 10, 80);
     this.enemyCar = new EnemyCar(width/2 + 100 + rnd.nextInt(400), height/2 - 100 + rnd.nextInt(400), 0, 0, enemyColor);
     this.playerCar = new Car(width/2 - 100 - rnd.nextInt(400), height/2 - 100 + rnd.nextInt(400), 0, 0, playerColor);
 
@@ -60,9 +60,13 @@ public class GameView extends View {
 
     if(enemyCar.isDead) {
       View view = new GameOverView(this.gameFrame, this.width, this.height, false);
+      SoundManager.getInstance().dissapear();
+      SoundManager.getInstance().excellent();
       transitionToView(view);
     } else if(playerCar.isDead) {
       View view = new GameOverView(this.gameFrame, this.width, this.height, true);
+      SoundManager.getInstance().dissapear();
+      SoundManager.getInstance().bad();
       transitionToView(view);
     }
   }
