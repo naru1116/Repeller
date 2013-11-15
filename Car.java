@@ -152,8 +152,7 @@ class Car extends Sprite {
     int i = currentAfterImage;
     int j = 0;
     while(true) {
-      //Color color = (new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)0.4*((float)j/(afterImageCount - 1)))).darker();
-      Color color = (new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)1.0)).darker().darker().darker();
+      Color color = new Color((float)(this.color.getRed() / 255.0), (float)(this.color.getGreen()/ 255.0), (float)(this.color.getBlue()/ 255.0), (float)0.1).darker();
       g.setColor(color);
       g.fillRect((int)xs[i], (int)ys[i], (int)width, (int)height);
       i++; if(i == afterImageCount) i = 0;
