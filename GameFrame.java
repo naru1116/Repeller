@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.*;
 import java.awt.event.*;
-public class GameFrame extends ExitFrame {
+public class GameFrame extends Frame {
   private View currentView;
   private Dimension dimension;
   public GameFrame() {
