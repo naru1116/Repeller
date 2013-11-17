@@ -13,16 +13,13 @@ public class Gauge {
     this.width = width;
     this.height = height;
     this.value = value;
-    this.animatingValue = value;
+    this.animatingValue = 1.0;
     this.color = color;
   }
   void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
     double valueDistance = this.value - this.animatingValue;
     this.animatingValue += valueDistance * 0.1;
-    g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 60));
-    g.fillRect(this.x, this.y, this.width, this.height);
-    Color brightColor = color;
-    g.setColor(new Color(brightColor.getRed(), brightColor.getGreen(), brightColor.getBlue(), 255));
+    g.setColor(color.darker().darker());
     g.fillRect(this.x, this.y, (int)(this.width * this.animatingValue), this.height);
   }
 }

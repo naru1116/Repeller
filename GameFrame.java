@@ -7,7 +7,8 @@ public class GameFrame extends Frame {
   public GameFrame() {
     this.dimension = Toolkit.getDefaultToolkit().getScreenSize();
     SoundManager.getInstance().loop("bgm");
-    currentView  = new GameView(this, this.dimension.width, this.dimension.height);
+
+    currentView  = new GameOverView(this, this.dimension.width, this.dimension.height, false);
     addMouseListener(currentView);
   }
 

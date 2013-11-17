@@ -9,9 +9,15 @@ public class GameOverView extends View {
   private boolean isLooser;
   private double time = 0.0;
   private boolean isClosing = false;
+  private static boolean isFirst = true;
+  private boolean isNormal = false;
 
   public GameOverView(GameFrame gameFrame, int width, int height, boolean isLooser) {
     super(gameFrame);
+    if(isFirst) {
+      isFirst = false;
+      isNormal = true;
+    }
     this.width = width;
     this.height = height;
     this.isLooser = isLooser;
@@ -21,8 +27,12 @@ public class GameOverView extends View {
     g.setColor(Color.black);
     g.fillRect(0, 0, (int)width, (int)height);
     Image img;
-    if(!isLooser)img = gameFrame.getToolkit().getImage("ok.png");
-    else img = gameFrame.getToolkit().getImage("ng.png");
+    if(isNormal) {
+      img = gameFrame.getToolkit().getImage("normal.png");
+    } else {
+      if(!isLooser)img = gameFrame.getToolkit().getImage("ok.png");
+      else img = gameFrame.getToolkit().getImage("ng.png");
+    }
     int destX = width/2 - 250;
     int destY = height/2 - 250;
 
