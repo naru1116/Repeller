@@ -13,6 +13,7 @@ class Car {
   public double dx = 0, dy = 0;
   public double ddx = 0, ddy = 0;
   public double damage = 0; //max damage is 1.0
+  public double minDamage = 0.0;
   public boolean isDead = false;
   public double energy = 0; //energy is 1.0
   public Color color;
@@ -119,8 +120,15 @@ class Car {
   }
 
   void update(Graphics g, int canvasX, int canvasY, int canvasWidth, int canvasHeight) {
+    if(this.damage >= 0.5) {
+      this.minDamage = 0.5;
+    }
+    if(this.damage >= 1.0) {
+      this.minDamage = 1.0;
+    }
+
     this.damage -= 0.001;
-    if(this.damage < 0) this.damage = 0;
+    if(this.damage < this.minDamage) this.damage = this.minDamage;
     if(hitTime-- <= 0) {
       hitTime = 0;
     }
